@@ -1,0 +1,12 @@
+.root {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 8px 15px;
+	width: 300px;
+	transition: 0.5s ease-in-out;
+	border-radius: 10px;
+	&:hover,
+	&:active,
+	&:focus {
+		transform: scale(1.2);
+	}
+}

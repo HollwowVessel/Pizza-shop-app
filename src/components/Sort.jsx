@@ -1,10 +1,15 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux/es/exports';
+import { setSortFilter } from '../redux/slices/filterSlice';
 
 const sortType = ['популярности', 'цене', 'алфавиту'];
-export default function Sort({ value, onClickSort }) {
+
+export default function Sort() {
 	const [visible, setVisible] = React.useState(false);
+	const sortId = useSelector((state) => state.filter.sortId);
+	const dispatch = useDispatch();
 	const handleType = (i) => {
-		onClickSort(i);
+		dispatch(setSortFilter(i));
 		setVisible(!visible);
 	};
 
@@ -23,13 +28,13 @@ export default function Sort({ value, onClickSort }) {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span>{sortType[value]}</span>
+				<span>{sortType[sortId]}</span>
 			</div>
 			{visible && (
 				<div className="sort__popup">
 					<ul>
 						{sortType.map((type, i) => (
-							<li key={i} className={i === value ? 'active' : ''} onClick={() => handleType(i)}>
+							<li key={i} className={i === sortId ? 'active' : ''} onClick={() => handleType(i)}>
 								{type}
 							</li>
 						))}
