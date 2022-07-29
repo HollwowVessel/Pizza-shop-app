@@ -5,17 +5,16 @@ import { addItem, removeItem, clearItem } from '../redux/slices/cartSlice';
 export default function CartItem({ id, title, type, price, imageUrl, quantity, size }) {
 	const dispatch = useDispatch();
 	const handlePlus = () => {
-		dispatch(addItem({ id }));
+		dispatch(addItem({ id, type, size }));
 	};
 	const handleMinus = () => {
-		dispatch(removeItem({ id }));
+		dispatch(removeItem({ id, type, size }));
 	};
 	const handleClear = () => {
 		if (window.confirm('Удалить товар?')) {
-			dispatch(clearItem({ id }));
+			dispatch(clearItem({ id, type, size }));
 		}
 	};
-	console.log(imageUrl);
 	return (
 		<div class="cart__item">
 			<div class="cart__item-img">

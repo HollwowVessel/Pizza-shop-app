@@ -15,10 +15,12 @@ export default function PizzaBlock({
 }) {
 	const dispatch = useDispatch();
 
-	const items = useSelector((state) => state.cart.items.find((obj) => obj.id === id));
+	const items = useSelector((state) => state.cart.items.filter((obj) => obj.id === id));
+
 	const [activeSize, setActiveSize] = React.useState(0);
 	const [activeDough, setActiveDough] = React.useState(0);
-	const addedCount = items ? items.quantity : 0;
+	const addedCount = items ? items.reduce((sum, obj) => sum + obj.quantity, 0) : 0;
+
 	const handleClickAdd = () => {
 		const item = {
 			id,
@@ -28,7 +30,6 @@ export default function PizzaBlock({
 			type: doughType[activeDough],
 			size: sizes[activeSize],
 		};
-		console.log(item);
 		dispatch(addItem(item));
 	};
 
