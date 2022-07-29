@@ -7,14 +7,27 @@ const sortType = ['популярности', 'цене', 'алфавиту'];
 export default function Sort() {
 	const [visible, setVisible] = React.useState(false);
 	const sortId = useSelector((state) => state.filter.sortId);
+	const sortRef = React.useRef();
 	const dispatch = useDispatch();
 	const handleType = (i) => {
 		dispatch(setSortFilter(i));
 		setVisible(!visible);
 	};
+	React.useEffect(() => {
+		const handleClickOutside = (e) => {
+			if (!e.path.includes(sortRef.current)) {
+				setVisible(false);
+			}
+		};
 
+		document.body.addEventListener('click', handleClickOutside);
+
+		return () => {
+			document.body.removeEventListener('click', handleClickOutside);
+		};
+	}, []);
 	return (
-		<div className="sort">
+		<div ref={sortRef} className="sort">
 			<div className="sort__label" onClick={() => setVisible(!visible)}>
 				<svg
 					width="10"
