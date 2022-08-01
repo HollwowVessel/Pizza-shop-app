@@ -4,10 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { clearItems } from '../redux/slices/cartSlice';
 import CartItem from '../components/CartItem';
 
-function Cart() {
+function Cart({ searchValue }) {
 	const dispatch = useDispatch();
 	const items = [...useSelector((state) => state.cart.items)];
-	console.log(items);
 	const totalPrice = useSelector((state) => state.cart.totalPrice);
 	const clearCart = () => {
 		if (!items.length) return;
@@ -15,6 +14,7 @@ function Cart() {
 			dispatch(clearItems());
 		}
 	};
+
 	return (
 		<div className="container container--cart">
 			{items.length ? (
@@ -89,6 +89,7 @@ function Cart() {
 							? items
 									.sort((a, b) => (a.size < b.size ? 1 : -1))
 									.sort((a, b) => (a.id < b.id ? 1 : -1))
+									.filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase()))
 									.map((item) => (
 										<CartItem key={item.id + item.size + item.type + item.name} {...item} />
 									))

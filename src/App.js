@@ -3,6 +3,7 @@ import React from 'react';
 
 import './scss/app.scss';
 import Header from './components/Header';
+import PizzaInfo from './pages/PizzaInfo';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import NotFound from './pages/NotFound';
@@ -19,7 +20,8 @@ function App() {
 					<div className="container">
 						<Routes>
 							<Route path="/" element={<Home searchValue={searchValue} />} />
-							<Route path="/cart" element={<Cart />} />
+							<Route path="/cart" element={<Cart searchValue={searchValue} />} />
+							<Route path="/pizzas/:id" element={<PizzaInfo />} />
 							<Route path="*" element={<NotFound />} />
 						</Routes>
 					</div>
