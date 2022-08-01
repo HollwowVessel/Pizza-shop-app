@@ -14,23 +14,30 @@ export default function PizzaBlock({
 	sizes,
 }) {
 	const dispatch = useDispatch();
-
-	const items = useSelector((state) => state.cart.items.filter((obj) => obj.id === id));
-
 	const [activeSize, setActiveSize] = React.useState(0);
-	const [activeDough, setActiveDough] = React.useState(0);
-	const addedCount = items ? items.reduce((sum, obj) => sum + obj.quantity, 0) : 0;
-
+	const [activeDough, setActiveDough] = React.useState(types.length > 1 ? 0 : types[0]);
+	const items = useSelector((state) =>
+		state.cart.items.filter(
+			(obj) =>
+				obj.id === id && obj.type === doughType[activeDough] && obj.size === sizes[activeSize],
+		),
+	);
+	const item = items.find(
+		(i) => i.id === id && i.type === doughType[activeDough] && i.size === sizes[activeSize],
+	);
+	const addedCount = item ? item.quantity : 0;
+	console.log(types[0]);
 	const handleClickAdd = () => {
-		const item = {
-			id,
-			title,
-			price,
-			imageUrl,
-			type: doughType[activeDough],
-			size: sizes[activeSize],
-		};
-		dispatch(addItem(item));
+		dispatch(
+			addItem({
+				id,
+				title,
+				price,
+				imageUrl,
+				type: doughType[activeDough],
+				size: sizes[activeSize],
+			}),
+		);
 	};
 
 	return (
@@ -43,8 +50,8 @@ export default function PizzaBlock({
 						{types.map((doughIndex, i) => (
 							<li
 								key={doughIndex}
-								className={activeDough === i ? 'active' : ''}
-								onClick={() => setActiveDough(i)}>
+								className={activeDough === (types.length > 1 ? i : types[0]) ? 'active' : ''}
+								onClick={() => setActiveDough(types.length > 1 ? i : types[0])}>
 								{doughType[doughIndex]}
 							</li>
 						))}
@@ -75,7 +82,7 @@ export default function PizzaBlock({
 							/>
 						</svg>
 						<span>Добавить</span>
-						{addedCount > 0 && <i>{addedCount}</i>}
+						<i>{addedCount}</i>
 					</button>
 				</div>
 			</div>
