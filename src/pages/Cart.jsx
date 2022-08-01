@@ -6,7 +6,8 @@ import CartItem from '../components/CartItem';
 
 function Cart() {
 	const dispatch = useDispatch();
-	const items = useSelector((state) => state.cart.items);
+	const items = [...useSelector((state) => state.cart.items)];
+	console.log(items);
 	const totalPrice = useSelector((state) => state.cart.totalPrice);
 	const clearCart = () => {
 		if (!items.length) return;
@@ -84,9 +85,14 @@ function Cart() {
 						</div>
 					</div>
 					<div class="content__items">
-						{items.map((item) => (
-							<CartItem key={item.id} {...item} />
-						))}
+						{items.length
+							? items
+									.sort((a, b) => (a.size < b.size ? 1 : -1))
+									.sort((a, b) => (a.id < b.id ? 1 : -1))
+									.map((item) => (
+										<CartItem key={item.id + item.size + item.type + item.name} {...item} />
+									))
+							: items}
 					</div>
 					<div class="cart__bottom">
 						<div class="cart__bottom-details">
@@ -133,9 +139,9 @@ function Cart() {
 						главную страницу.
 					</p>
 					<img src={require('./../img/empty-cart.png')} alt="Empty cart" />
-					<a href="/" class="button button--black">
+					<Link to="/" class="button button--black">
 						<span>Вернуться назад</span>
-					</a>
+					</Link>
 				</div>
 			)}
 		</div>
