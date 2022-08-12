@@ -3,34 +3,26 @@ import { useParams } from 'react-router-dom';
 
 export default function PizzaInfo() {
 	const { id } = useParams();
-	const [item, setItem] = React.useState({});
+	const [item, setItem] = React.useState([]);
+	const [isLoading, setIsLoading] = React.useState(true);
+
 	React.useEffect(() => {
-		try {
-			fetch('https://62dd51abccdf9f7ec2c4c001.mockapi.io/items/' + id)
-				.then((res) => res.json())
-				.then((data) => {
-					setItem(data);
-				});
-		} catch (error) {
-			alert('Ошибка загрузки!');
-		} finally {
-			console.log('heck');
-		}
+		fetch('https://62dd51abccdf9f7ec2c4c001.mockapi.io/items/' + id)
+			.then((res) => res.json())
+			.then((data) => {
+				setItem(data);
+				setIsLoading(false);
+			});
 	}, [id]);
-	if (!item) {
-		return <h1>Загрузка...</h1>;
-	}
-	//to do
-	return (
-		<div className="container">
-			<img src={item.imageUrl} alt="pizzaUrl" />
-			<h2>{item.title}</h2>
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere perferendis voluptates,
-				recusandae quidem dolorum nam quisquam. Sed, nisi cupiditate. Laudantium repellendus
-				eligendi nisi quia eos harum asperiores eum debitis obcaecati.
-			</p>
-			<h4>{item.price} р. </h4>
+	return !isLoading ? (
+		<div className="container" style={{ display: 'flex' }}>
+			<img src={item.imageUrl} alt="pizzaUrl" width={280} />
+			<div>
+				<h2 style={{ marginBottom: '20px', fontSize: '24px' }}>{item.title}</h2>
+				<h4>{item.price} р. </h4>
+			</div>
 		</div>
+	) : (
+		<h1>Загрузка...</h1>
 	);
 }

@@ -27,7 +27,6 @@ export default function PizzaBlock({
 		(i) => i.id === id && i.type === doughType[activeDough] && i.size === sizes[activeSize],
 	);
 	const addedCount = item ? item.quantity : 0;
-	console.log(types[0]);
 	const handleClickAdd = () => {
 		dispatch(
 			addItem({
